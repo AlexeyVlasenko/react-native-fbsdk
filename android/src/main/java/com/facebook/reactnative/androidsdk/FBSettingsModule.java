@@ -11,7 +11,9 @@ package com.facebook.reactnative.androidsdk;
 import androidx.annotation.Nullable;
 
 import com.facebook.FacebookSdk;
-import com.facebook.react.bridge.BaseJavaModule;
+import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.module.annotations.ReactModule;
 
@@ -19,12 +21,23 @@ import com.facebook.react.module.annotations.ReactModule;
  * This is a {@link NativeModule} that allows JS to use SDK settings in Facebook Android SDK.
  */
 @ReactModule(name = FBSettingsModule.NAME)
-public class FBSettingsModule extends BaseJavaModule {
+public class FBSettingsModule extends ReactContextBaseJavaModule {
     private final static String ERR_FACEBOOK_MISCONFIGURED = "ERR_FACEBOOK_MISCONFIGURED";
+    protected String mAppId;
+    protected String mAppName;
+
+    private final ReactApplicationContext mReactContext;
+
 
     public static final String NAME = "FBSettings";
 
     public FBSettingsModule() {}
+
+
+    public FBSettingsModule(ReactApplicationContext reactContext) {
+            super(reactContext);
+            mReactContext = reactContext;
+    }
 
     @Override
     public String getName() {
@@ -41,7 +54,7 @@ public class FBSettingsModule extends BaseJavaModule {
         promise.resolve(null);
       }
 
-      @ExpoMethod
+      @ReactMethod
         public void initializeAsync(ReadableArguments options, final Promise promise) {
           final String appId = options.getString("appId");
 
@@ -68,7 +81,7 @@ public class FBSettingsModule extends BaseJavaModule {
               FacebookSdk.setIsDebugEnabled(options.getBoolean("isDebugEnabled"));
             }
 
-            FacebookSdk.sdkInitialize(getContext(), new FacebookSdk.InitializeCallback() {
+            FacebookSdk.sdkInitialize(mReactContext.getApplicationContext(), new FacebookSdk.InitializeCallback() {
               @Override
               public void onInitialized() {
                 FacebookSdk.fullyInitialize();
