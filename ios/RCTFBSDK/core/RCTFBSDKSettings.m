@@ -20,6 +20,7 @@ RCT_EXPORT_MODULE(FBSettings);
 }
 
 #pragma mark - React Native Methods
+#pragma mark - React Native Methods
 
 RCT_EXPORT_METHOD(getAdvertiserTrackingEnabled:(RCTPromiseResolveBlock)resolve rejector:(RCTPromiseRejectBlock)reject)
 {

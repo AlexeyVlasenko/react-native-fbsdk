@@ -57,19 +57,7 @@ module.exports = {
     return Settings.setAutoInitEnabledAsync(enabled);
   },
 
-  initializeAsync(optionsOrAppId, appName?: string): Promise<void> {
-    let options = {};
-
-    if (typeof optionsOrAppId === 'string') {
-      options.appId = optionsOrAppId;
-      options.appName = appName;
-      console.warn(
-        'The parameters of `initializeAsync(appId, appName)` have changed to support future platforms, you must now provide an object instead: initializeAsync({ appId, appName }).',
-      );
-    } else {
-      options = optionsOrAppId;
-    }
-
-    return Settings.initializeAsync(options);
+  initializeAsync(appId: string, appName?: string): Promise<void> {
+    return Settings.initializeAsync(appId, appName);
   },
 };
