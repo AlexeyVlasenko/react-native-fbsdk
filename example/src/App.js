@@ -7,8 +7,8 @@ const App = () => {
 
   useEffect(()=> {
     const init = async ()=> {
-      const res = await Settings.setAutoInitEnabledAsync(false);
-      console.warn(res);
+      /*const res = await Settings.setAutoInitEnabledAsync(false);
+      console.warn(res);*/
 
 
       setTimeout(async ()=> {
