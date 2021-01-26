@@ -20,6 +20,7 @@ import com.facebook.react.module.annotations.ReactModule;
  */
 @ReactModule(name = FBSettingsModule.NAME)
 public class FBSettingsModule extends BaseJavaModule {
+    private final static String ERR_FACEBOOK_MISCONFIGURED = "ERR_FACEBOOK_MISCONFIGURED";
 
     public static final String NAME = "FBSettings";
 
@@ -29,6 +30,57 @@ public class FBSettingsModule extends BaseJavaModule {
     public String getName() {
         return NAME;
     }
+
+
+      @ReactMethod
+      public void setAutoInitEnabledAsync(final Boolean enabled, final Promise promise) {
+        FacebookSdk.setAutoInitEnabled(enabled);
+        if (enabled) {
+          FacebookSdk.fullyInitialize();
+        }
+        promise.resolve(null);
+      }
+
+      @ExpoMethod
+        public void initializeAsync(ReadableArguments options, final Promise promise) {
+          final String appId = options.getString("appId");
+
+          try {
+            if (appId != null) {
+              mAppId = appId;
+              FacebookSdk.setApplicationId(appId);
+            }
+            if (options.containsKey("appName")) {
+              mAppName = options.getString("appName");
+              FacebookSdk.setApplicationName(mAppName);
+            }
+            if (options.containsKey("version")) {
+              FacebookSdk.setGraphApiVersion(options.getString("version"));
+            }
+            if (options.containsKey("autoLogAppEvents")) {
+              Boolean autoLogAppEvents = options.getBoolean("autoLogAppEvents");
+              FacebookSdk.setAutoLogAppEventsEnabled(autoLogAppEvents);
+            }
+            if (options.containsKey("domain")) {
+              FacebookSdk.setFacebookDomain(options.getString("domain"));
+            }
+            if (options.containsKey("isDebugEnabled")) {
+              FacebookSdk.setIsDebugEnabled(options.getBoolean("isDebugEnabled"));
+            }
+
+            FacebookSdk.sdkInitialize(getContext(), new FacebookSdk.InitializeCallback() {
+              @Override
+              public void onInitialized() {
+                FacebookSdk.fullyInitialize();
+                mAppId = FacebookSdk.getApplicationId();
+                mAppName = FacebookSdk.getApplicationName();
+                promise.resolve(null);
+              }
+            });
+          } catch (Exception e) {
+            promise.reject(ERR_FACEBOOK_MISCONFIGURED, "An error occurred while trying to initialize a FBSDK app", e);
+          }
+        }
 
     /**
      * Sets data processing options

@@ -52,4 +52,24 @@ module.exports = {
     }
     Settings.setDataProcessingOptions(options, country, state);
   },
+
+  setAutoInitEnabledAsync(enabled: boolean): Promise<void> {
+    return Settings.setAutoInitEnabledAsync(enabled);
+  },
+
+  initializeAsync(optionsOrAppId, appName?: string): Promise<void> {
+    let options = {};
+
+    if (typeof optionsOrAppId === 'string') {
+      options.appId = optionsOrAppId;
+      options.appName = appName;
+      console.warn(
+        'The parameters of `initializeAsync(appId, appName)` have changed to support future platforms, you must now provide an object instead: initializeAsync({ appId, appName }).',
+      );
+    } else {
+      options = optionsOrAppId;
+    }
+
+    return Settings.initializeAsync(options);
+  },
 };
