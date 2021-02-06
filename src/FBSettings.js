@@ -53,6 +53,18 @@ module.exports = {
     Settings.setDataProcessingOptions(options, country, state);
   },
 
+  setDebug(enabled: boolean): Promise<void> {
+    return Settings.setDebug(enabled);
+  },
+
+  isInitialized(): Promise<void> {
+    return Settings.isInitialized();
+  },
+
+  getAutoInitEnabledAsync(): Promise<void> {
+    return Settings.getAutoInitEnabledAsync();
+  },
+
   setAutoInitEnabledAsync(enabled: boolean): Promise<void> {
     return Settings.setAutoInitEnabledAsync(enabled);
   },

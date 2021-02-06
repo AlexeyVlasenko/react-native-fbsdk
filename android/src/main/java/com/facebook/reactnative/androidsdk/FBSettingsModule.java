@@ -41,12 +41,27 @@ public class FBSettingsModule extends ReactContextBaseJavaModule {
     }
 
 
+
+
+      @ReactMethod
+      public void setDebug(final Boolean enabled, final Promise promise) {
+        FacebookSdk.setIsDebugEnabled(enabled);
+        promise.resolve(true);
+      }
+
+      @ReactMethod
+      public void isInitialized(final Promise promise) {
+        promise.resolve(FacebookSdk.isFullyInitialized());
+      }
+
+      @ReactMethod
+      public void getAutoInitEnabledAsync(final Promise promise) {
+        promise.resolve(FacebookSdk.getAutoInitEnabled());
+      }
+
       @ReactMethod
       public void setAutoInitEnabledAsync(final Boolean enabled, final Promise promise) {
         FacebookSdk.setAutoInitEnabled(enabled);
-        if (enabled) {
-          FacebookSdk.fullyInitialize();
-        }
         promise.resolve(null);
       }
 
@@ -67,6 +82,9 @@ public class FBSettingsModule extends ReactContextBaseJavaModule {
                  FacebookSdk.fullyInitialize();
                  mAppId = FacebookSdk.getApplicationId();
                  mAppName = FacebookSdk.getApplicationName();
+
+                 System.out.println(mAppId);
+                 System.out.println(mAppName);
                  promise.resolve(null);
                }
              });

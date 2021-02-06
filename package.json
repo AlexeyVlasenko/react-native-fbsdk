@@ -47,7 +47,7 @@
     "validate:eslint": "eslint \"src/**/*\" \"example/src/**/*\"",
     "validate:flow": "flow",
     "validate:prettier": "prettier \"src/**/*.js\" \"example/src/**/*.js\" --check",
-    "example:ios": "cd ./example && react-native run-ios",
+    "example:ios": "cd ./example/ios && pod install && cd .. && react-native run-ios",
     "example:android": "cd ./example && react-native run-android --no-jetifier"
   },
   "files": [

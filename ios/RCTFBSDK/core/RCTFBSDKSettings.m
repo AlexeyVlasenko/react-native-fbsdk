@@ -20,7 +20,48 @@ RCT_EXPORT_MODULE(FBSettings);
 }
 
 #pragma mark - React Native Methods
-#pragma mark - React Native Methods
+
+
+RCT_EXPORT_METHOD(setDebug:(BOOL)ATE resolver:(RCTPromiseResolveBlock)resolve rejector:(RCTPromiseRejectBlock)reject)
+{
+  [FBSDKSettings enableLoggingBehavior:FBSDKLoggingBehaviorAppEvents];
+  resolve(@(true));
+}
+
+RCT_EXPORT_METHOD(isInitialized:(RCTPromiseResolveBlock)resolve rejector:(RCTPromiseRejectBlock)reject)
+{
+  resolve(@(true));
+}
+
+RCT_EXPORT_METHOD(getAutoInitEnabledAsync:(RCTPromiseResolveBlock)resolve rejector:(RCTPromiseRejectBlock)reject)
+{
+  resolve(@(true));
+}
+
+RCT_EXPORT_METHOD(setAutoInitEnabledAsync:(BOOL)ATE resolver:(RCTPromiseResolveBlock)resolve rejector:(RCTPromiseRejectBlock)reject)
+{
+  [FBSDKSettings setAutoInitEnabled:ATE];
+  resolve(@(true));
+}
+
+RCT_EXPORT_METHOD(initializeAsync:(NSString *)appId appName:(NSString *)appName
+                  resolve:(RCTPromiseResolveBlock)resolve
+                  reject:(RCTPromiseRejectBlock)reject)
+{
+  if (appId) {
+    [FBSDKSettings setAppID:appId];
+  }
+  if (appName) {
+    [FBSDKSettings setDisplayName:appName];
+  }
+
+  [FBSDKApplicationDelegate initializeSDK:nil];
+  [FBSDKAppEvents activateApp];
+
+  resolve(nil);
+}
+
+
 
 RCT_EXPORT_METHOD(getAdvertiserTrackingEnabled:(RCTPromiseResolveBlock)resolve rejector:(RCTPromiseRejectBlock)reject)
 {

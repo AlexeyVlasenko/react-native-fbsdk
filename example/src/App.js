@@ -1,27 +1,39 @@
 import React, {memo, useEffect} from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Button } from 'react-native';
 import PropTypes from 'prop-types';
-import {Settings} from 'react-native-fbsdk';
+import {Settings as FBSDK, AppEventsLogger} from 'react-native-fbsdk';
 
 const App = () => {
 
   useEffect(()=> {
     const init = async ()=> {
-      /*const res = await Settings.setAutoInitEnabledAsync(false);
-      console.warn(res);*/
-
-
-      setTimeout(async ()=> {
-        const res = await Settings.initializeAsync('pososi.pizdu.blyad', 'ok budu');
-        console.warn(res);
-      }, 3000);
+      //
+      // await FBSDK.setDebug(true);
+      await FBSDK.setAutoInitEnabledAsync(false);
     };
 
     init();
   },[]);
 
   return (
-    <View style={styles.container} />
+    <View style={styles.container}>
+      <Button title={'DO_INIT'} onPress={async ()=> {
+        await FBSDK.initializeAsync('1312899995746379', 'Test App');
+        await FBSDK.setAutoInitEnabledAsync(true);
+      }}/>
+      <Button title={'IS_INITED'} onPress={async ()=> {
+        const res = await FBSDK.isInitialized();
+        console.warn(res);
+      }}/>
+      <Button title={'IS_AUTO_INIT_ENABLED'} onPress={async ()=> {
+        const res = await FBSDK.getAutoInitEnabledAsync();
+        console.warn(res);
+      }}/>
+      <Button title={'ANALYTIC'} onPress={async ()=> {
+        const res = await AppEventsLogger.logEvent('ANALYTIC_PRESSED_4');
+        console.warn(res);
+      }}/>
+    </View>
   );
 };
 
@@ -29,7 +41,8 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'gray',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
